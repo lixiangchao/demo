@@ -6,30 +6,18 @@ pipeline {
         jdk   'jdk1.8'
     }
 	
-    stages {     
-        stage ('Initialize') {
-            steps {
-                sh '''
-                    echo "PATH = ${PATH}"
-                    echo "MAVEN_HOME = ${MAVEN_HOME}"
-                ''' 
-            }
-        }        
+    node {
+    
+    	docker.image('java:8').inside{
+    	
+    		echo '********java version**********'
+    		sh   'java -version'
+    	}     
         stage('Package') {
             steps {
+              echo '********Build JAR********'
               sh 'mvn clean package'
-              sh 'mv -u target/demo-0.0.1-SNAPSHOT.war  docker/demo.war'
-            }
-        }
-        stage('Build') {
-            steps {
-             sh "sudo docker build -t demo:${GIT_BRANCH} docker/"
-        	}
-        }
-        stage('Push') {
-            steps {
-             sh "sudo docker tag demo:${GIT_BRANCH} docker.registry.cscloud.com/demo:${GIT_BRANCH} "
-             sh "sudo docker push docker.registry.cscloud.com/demo:${GIT_BRANCH}"
+              sh 'mv -u target/demo-0.0.1-SNAPSHOT.jar  docker/demo.jar'
             }
         }
     }

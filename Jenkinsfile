@@ -8,9 +8,11 @@ pipeline {
 	
 	stages{
 		stage('test'){
-			docker.image('java:8').inside{
-    			echo '********java version**********'
-    			sh   'java -version'
+			 steps {
+			 	docker.image('java:8').inside{
+    				echo '********java version**********'
+    				sh   'java -version'
+			 }
 		}	
 	}
   }

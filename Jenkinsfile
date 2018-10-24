@@ -13,7 +13,10 @@ pipeline {
     		echo '********java version**********'
     		sh   'java -version'
     	}     
-        stage('Package') {
+    }
+    
+    stages{
+         stage('Package') {
             steps {
               echo '********Build JAR********'
               sh 'mvn clean package'
@@ -21,4 +24,5 @@ pipeline {
             }
         }
     }
+
 }
